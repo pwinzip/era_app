@@ -14,6 +14,17 @@ class AssHomePage extends StatefulWidget {
 
 class _AssHomePageState extends State<AssHomePage> {
   final _advancedDrawerController = AdvancedDrawerController();
+  final List<bool> _completed = [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(
@@ -71,114 +82,113 @@ class _AssHomePageState extends State<AssHomePage> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              margin: const EdgeInsets.only(left: 20, top: 8),
-              child: Column(
-                // shrinkWrap: true,
-                children: [
-                  const Text(
-                    "ชื่อ นามสกุล",
-                    style: TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
+            child: Column(
+              children: [
+                const ListTile(
+                  contentPadding: EdgeInsets.only(right: 16),
+                  tileColor: Color(0xFFEAEAEA),
+                  title: Text(
+                    "ผู้สูงอายุ ชื่อ นามสกุล",
+                    style: TextStyle(fontSize: 16, color: Color(0xFF656363)),
+                    textAlign: TextAlign.right,
                   ),
-                  const SizedBox(height: 8),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AssProfile(uid: "0001"),
-                          ));
-                    },
-                    child: Card(
-                      child: const ListTile(
-                        title: Text("ข้อมูลส่วนตัว"),
-                        tileColor: const Color(0xFFFE965F),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Column(
+                    // shrinkWrap: true,
+                    children: [
+                      createMenu(
+                        "ข้อมูลทั่วไป",
+                        MaterialPageRoute(
+                          builder: (context) => const AssProfile(uid: "u0001"),
+                        ),
+                        _completed[0],
                       ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const AssessmentPartOne(),
-                          ));
-                    },
-                    child: ListTile(
-                      title: Text(
+                      createMenu(
                         "1. สิ่งแวดล้อมทางกายภาพ",
-                        style: TextStyle(color: Colors.white),
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[1],
                       ),
-                      tileColor: Color(0xFFFE965F),
-                    ),
+                      createMenu(
+                        "2. สิ่งแวดล้อมทางเคมี",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[2],
+                      ),
+                      createMenu(
+                        "3. สิ่งแวดล้อมทางชีวภาพ",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[3],
+                      ),
+                      createMenu(
+                        "4. การยศาสตร์",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[4],
+                      ),
+                      createMenu(
+                        "5. จิตวิทยาสังคม",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[5],
+                      ),
+                      createMenu(
+                        "6. ความเสี่ยงในการบาดเจ็บหรือเกิดอุบัติเหตุ",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[6],
+                      ),
+                      createMenu(
+                        "7. ความเสี่ยงในการเกิดไฟไหม้หรือสารเคมีรั่วไหล",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[7],
+                      ),
+                      createMenu(
+                        "8. คุณภาพอากาศ",
+                        MaterialPageRoute(
+                          builder: (context) => const AssessmentPartOne(),
+                        ),
+                        _completed[8],
+                      ),
+                    ],
                   ),
-                  // const Text(
-                  //   "ประเมินความเสี่ยงในการทำงาน",
-                  //   style: TextStyle(fontSize: 22),
-                  //   textAlign: TextAlign.center,
-                  // ),
-                  // const SizedBox(height: 16),
-                  // Text(
-                  //   "สภาพแวดล้อมและปัจจัยคุกคามในการทำงาน ปัจจัยเสี่ยงต่อการทำงานและการจัดการความปลอดภัยในที่ทำงานของผู้สูงอายุ",
-                  //   style: TextStyle(fontSize: 16, color: Colors.grey[700]),
-                  //   textAlign: TextAlign.center,
-                  //   softWrap: true,
-                  // ),
-                  // const SizedBox(height: 16),
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.width * 0.9,
-                  //   child: Container(
-                  //     padding: const EdgeInsets.all(16),
-                  //     child: const Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Text("0 = ไม่เคยสัมผัส"),
-                  //         Text("1 = สัมผัสน้อย (1 ครั้ง/เดือน)"),
-                  //         Text("2 = สัมผัสปานกลาง (2 ครั้ง/เดือน)"),
-                  //         Text("3 = สัมผัสมาก (ตั้งแต่ 3 ครั้งขึ้นไป/เดือน)"),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // const Divider(height: 16),
-                  // SizedBox(
-                  //   width: MediaQuery.of(context).size.width * 0.9,
-                  //   child: Container(
-                  //     padding: const EdgeInsets.all(16),
-                  //     child: const Column(
-                  //       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       children: [
-                  //         Text("1 = รุนแรงน้อย (ปฐมพยาบาลเบื้องต้น)"),
-                  //         Text(
-                  //             "2 = รุนแรงปานกลาง (หยุดงานไม่เกิน 3 วัน/รักษาตัวเอง)"),
-                  //         Text(
-                  //             "3 = รุนแรงมาก (หยุดงานเกิน 3 วัน/รักษาตัวเอง/รับการรักษาจากถสานพยาบาล)"),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                  // const Divider(height: 16),
-                  // RichText(
-                  //   textAlign: TextAlign.center,
-                  //   text: const TextSpan(
-                  //     text: 'หมายเหตุ: ',
-                  //     style: TextStyle(
-                  //         color: Colors.black, fontWeight: FontWeight.bold),
-                  //     children: [
-                  //       TextSpan(
-                  //           text:
-                  //               'การจัดการความปลอดภัย (ถ้ามี) สามารถตอบได้มากกว่า 1 ข้อ',
-                  //           style: TextStyle(fontWeight: FontWeight.normal)),
-                  //     ],
-                  //   ),
-                  // ),
-                  const SizedBox(height: 16),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  InkWell createMenu(
+      String title, MaterialPageRoute materialPageRoute, bool enable) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(context, materialPageRoute);
+      },
+      child: Card(
+        color: enable ? const Color(0xFFBBFFBB) : const Color(0xFFF5AD86),
+        child: ListTile(
+          title: Text(title),
+          trailing: enable
+              ? const Icon(
+                  Icons.check_circle_rounded,
+                  color: Color(0xFF407F40),
+                )
+              : null,
         ),
       ),
     );

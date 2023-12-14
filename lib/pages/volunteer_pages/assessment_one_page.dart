@@ -1,5 +1,6 @@
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:elra/utils/drawer_components.dart';
+import 'package:elra/utils/info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 
@@ -13,14 +14,7 @@ class AssessmentPartOne extends StatefulWidget {
 class _AssessmentPartOneState extends State<AssessmentPartOne> {
   final _advancedDrawerController = AdvancedDrawerController();
 
-  // bool _disable1_1 = false;
-  // bool _disable1_2 = false;
-  // bool _disable1_3 = false;
-  // bool _disable1_4 = false;
-  // bool _disable1_5 = false;
-  // bool _disable1_6 = false;
   final List<bool> _disable1 = [false, false, false, false, false, false];
-  // final List<bool> _manageChoice1_1 = [false, false, false, false, false];
 
   final Map<String, dynamic> _manageChoice1 = {
     "1.1": [false, false, false, false, false],
@@ -30,7 +24,6 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
     "1.5": [false, false, false, false, false],
     "1.6": [false, false, false, false, false],
   };
-
   final Map<String, dynamic> _enable_manage1 = {
     "1.1": [false, false, true, true, true],
     "1.2": [true, false, true, true, true],
@@ -39,13 +32,6 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
     "1.5": [true, false, true, true, true],
     "1.6": [true, true, true, true, true],
   };
-
-  // final List<bool> _enable_manage1_1 = [false, false, true, true, true];
-  // final List<bool> _enable_manage1_2 = [true, false, true, true, true];
-  // final List<bool> _enable_manage1_3 = [true, false, true, true, true];
-  // final List<bool> _enable_manage1_4 = [true, false, true, true, true];
-  // final List<bool> _enable_manage1_5 = [true, false, true, true, true];
-  // final List<bool> _enable_manage1_6 = [true, true, true, true, true];
   final List<String> _manage_group1 = [
     'การบำรุงรักษา/ปรับปรุงพื้นที่',
     'ทำความสะอาดร่างกาย/เสื้อผ้า',
@@ -74,77 +60,131 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         appBar: AppBar(
           title: const Text("อาสาสมัคร"),
           leading: IconButton(
-              onPressed: _handleMenuButtonPressed,
-              icon: ValueListenableBuilder<AdvancedDrawerValue>(
-                valueListenable: _advancedDrawerController,
-                builder: (_, value, __) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: Icon(
-                      value.visible ? Icons.clear : Icons.menu,
-                      key: ValueKey<bool>(value.visible),
+            onPressed: _handleMenuButtonPressed,
+            icon: ValueListenableBuilder<AdvancedDrawerValue>(
+              valueListenable: _advancedDrawerController,
+              builder: (_, value, __) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: Icon(
+                    value.visible ? Icons.clear : Icons.menu,
+                    key: ValueKey<bool>(value.visible),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog.fullscreen(
+                      child: assessmentInstruction(context),
                     ),
                   );
                 },
-              )),
+                icon: const Icon(Icons.info))
+          ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              margin: const EdgeInsets.only(left: 20, top: 20),
-              child: Column(
-                // shrinkWrap: true,
-                children: [
-                  const Text(
-                    "1. สิ่งแวดล้อมทางกายภาพ",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w500),
-                    textAlign: TextAlign.center,
+            child: Column(
+              children: [
+                const ListTile(
+                  contentPadding: EdgeInsets.only(right: 16),
+                  tileColor: Color(0xFFEAEAEA),
+                  title: Text(
+                    "ผู้สูงอายุ ชื่อ นามสกุล",
+                    style: TextStyle(fontSize: 16, color: Color(0xFF656363)),
+                    textAlign: TextAlign.right,
                   ),
-                  const SizedBox(height: 16),
-                  const Text('1.1 มีการสัมผัสความร้อน',
-                      style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 8),
-                  assessmentSection(index: 0),
-                  const SizedBox(height: 16),
-                  const Text('การจัดการความความปลอดภัย (ถ้ามี)'),
-                  createCheckbox1(sub: "1.1"),
-                  const Divider(),
-                  const Text('2. มีการสัมผัสเสียงดัง',
-                      style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 8),
-                  assessmentSection(index: 1),
-                  const SizedBox(height: 16),
-                  const Text('การจัดการความความปลอดภัย (ถ้ามี)'),
-                  createCheckbox1(sub: "1.2"),
-                  const Divider(),
-                  const Text('3. มีแสงสว่างจ้าเกินไป',
-                      style: TextStyle(fontSize: 18)),
-                  const Text('4. มีแสงสว่างไม่เพียงพอ',
-                      style: TextStyle(fontSize: 18)),
-                  const Text('5. มีความสั่นสะเทือน',
-                      style: TextStyle(fontSize: 18)),
-                  const Text('6. มีการสัมผัสกับรังสี UV',
-                      style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Column(
+                    // shrinkWrap: true,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text('ย้อนกลับ'),
+                      const Text(
+                        "1. สิ่งแวดล้อมทางกายภาพ",
+                        style: TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w500),
+                        textAlign: TextAlign.center,
                       ),
-                      ElevatedButton.icon(
-                        icon: const Icon(Icons.save_alt),
-                        label: const Text("บันทึก"),
-                        onPressed: () {},
-                      ),
+                      const SizedBox(height: 16),
+                      // ---------- 1.1 ----------
+                      const Text('1.1 มีการสัมผัสความร้อน',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      assessmentSection(index: 0),
+                      const SizedBox(height: 16),
+                      createCheckbox1(sub: "1.1"),
+                      const Divider(),
+                      // ---------- 1.2 ----------
+                      const Text('1.2 มีการสัมผัสเสียงดัง',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      assessmentSection(index: 1),
+                      const SizedBox(height: 16),
+                      createCheckbox1(sub: "1.2"),
+                      const Divider(),
+                      // ---------- 1.3 ----------
+                      const Text('1.3 มีแสงสว่างจ้าเกินไป',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      assessmentSection(index: 1),
+                      const SizedBox(height: 16),
+                      createCheckbox1(sub: "1.3"),
+                      const Divider(),
+                      // ---------- 1.4 ----------
+                      const Text('1.4 มีแสงสว่างไม่เพียงพอ',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      assessmentSection(index: 1),
+                      const SizedBox(height: 16),
+                      createCheckbox1(sub: "1.4"),
+                      const Divider(),
+                      // ---------- 1.5 ----------
+                      const Text('1.5 มีความสั่นสะเทือน',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      assessmentSection(index: 1),
+                      const SizedBox(height: 16),
+                      createCheckbox1(sub: "1.5"),
+                      const Divider(),
+                      // ---------- 1.6 ----------
+                      const Text('1.6 มีการสัมผัสกับรังสี UV',
+                          style: TextStyle(fontSize: 18)),
+                      const SizedBox(height: 8),
+                      assessmentSection(index: 1),
+                      const SizedBox(height: 16),
+                      createCheckbox1(sub: "1.6"),
+                      const Divider(),
+                      // ---------- action button ----------
+                      const SizedBox(height: 24),
+                      actionButton(),
+                      const SizedBox(height: 16),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     ElevatedButton(
+                      //       onPressed: () {
+                      //         Navigator.pop(context);
+                      //       },
+                      //       child: const Text('ย้อนกลับ'),
+                      //     ),
+                      //     ElevatedButton.icon(
+                      //       icon: const Icon(Icons.save_alt),
+                      //       label: const Text("บันทึก"),
+                      //       onPressed: () {},
+                      //     ),
+                      //   ],
+                      // ),
                     ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -152,18 +192,70 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
     );
   }
 
+  Widget actionButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton.icon(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          label: const Text("ย้อนกลับ"),
+          onPressed: () {
+            // back to home page
+            Navigator.pop(context);
+          },
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(const Color(0xFFFE965F)),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            )),
+          ),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.save),
+          label: const Text("บันทึก"),
+          onPressed: () {
+            // save to database
+            // back to home page
+            Navigator.pop(context);
+          },
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(const Color(0xFF407F40)),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            )),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget assessmentSection({required int index}) {
     return Column(
       children: [
-        const Text('โอกาสสัมผัส'),
+        ListTile(
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -2),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: const Text(
+            'โอกาสสัมผัส',
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          tileColor: const Color(0xFF029F8F),
+        ),
+        const SizedBox(height: 8),
         CustomRadioButton(
           enableShape: true,
           width: 60,
           elevation: 0,
-          // absoluteZeroSpacing: true,
-          unSelectedColor: Theme.of(context).canvasColor,
-          selectedBorderColor: Colors.black,
-          unSelectedBorderColor: Colors.black,
+          selectedBorderColor: Colors.transparent,
+          unSelectedBorderColor: Colors.transparent,
           buttonLables: const ['0', '1', '2', '3'],
           buttonValues: const ["0", "1", "2", "3"],
           buttonTextStyle: const ButtonTextStyle(
@@ -184,31 +276,43 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
             }
           },
           selectedColor: Colors.blue.shade600,
+          unSelectedColor: const Color(0xFFE8E8E8),
         ),
         const SizedBox(height: 16),
-        const Text('ความรุนแรง'),
+        ListTile(
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -2),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          title: const Text(
+            'ความรุนแรง',
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+          tileColor: const Color(0xFF029F8F),
+        ),
+        const SizedBox(height: 8),
         CustomRadioButton(
           enableShape: true,
           disabledValues: _disable1[index] ? ["1", "2", "3"] : [],
-          disabledColor: Colors.grey[400],
           width: 60,
           elevation: 0,
           // absoluteZeroSpacing: true,
-          selectedBorderColor: Colors.black,
-          unSelectedBorderColor: Colors.black,
+          selectedBorderColor: Colors.transparent,
+          unSelectedBorderColor: Colors.transparent,
           buttonLables: const ['1', '2', '3'],
           buttonValues: const ["1", "2", "3"],
-          buttonTextStyle: ButtonTextStyle(
+          buttonTextStyle: const ButtonTextStyle(
             selectedColor: Colors.white,
             unSelectedColor: Colors.black,
-            disabledColor: Colors.grey.shade700,
-            textStyle: const TextStyle(fontSize: 16),
+            disabledColor: Color.fromARGB(255, 168, 168, 168),
+            textStyle: TextStyle(fontSize: 16),
           ),
           radioButtonValue: (value) {
             print(value);
           },
           selectedColor: Colors.blue.shade600,
-          unSelectedColor: Theme.of(context).canvasColor,
+          unSelectedColor: const Color(0xFFE8E8E8),
+          disabledColor: const Color(0xFFE8E8E8),
         ),
       ],
     );
@@ -216,6 +320,18 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
 
   Widget createCheckbox1({required String sub}) {
     List<Widget> widgets = [];
+    widgets.add(
+      ListTile(
+        visualDensity: const VisualDensity(horizontal: 0, vertical: -2),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        title: const Text(
+          'การจัดการความความปลอดภัย (ถ้ามี)',
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+        tileColor: const Color(0xFF029F8F),
+      ),
+    );
     for (var i in List.generate(_manage_group1.length, (index) => index)) {
       widgets.add(
         CheckboxListTile(

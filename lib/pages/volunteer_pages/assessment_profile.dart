@@ -1,4 +1,5 @@
 import 'package:elra/utils/drawer_components.dart';
+import 'package:elra/utils/info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -76,67 +77,83 @@ class _AssProfileState extends State<AssProfile> {
         appBar: AppBar(
           title: const Text("อาสาสมัคร"),
           leading: IconButton(
-              onPressed: _handleMenuButtonPressed,
-              icon: ValueListenableBuilder<AdvancedDrawerValue>(
-                valueListenable: _advancedDrawerController,
-                builder: (_, value, __) {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 250),
-                    child: Icon(
-                      value.visible ? Icons.clear : Icons.menu,
-                      key: ValueKey<bool>(value.visible),
+            onPressed: _handleMenuButtonPressed,
+            icon: ValueListenableBuilder<AdvancedDrawerValue>(
+              valueListenable: _advancedDrawerController,
+              builder: (_, value, __) {
+                return AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: Icon(
+                    value.visible ? Icons.clear : Icons.menu,
+                    key: ValueKey<bool>(value.visible),
+                  ),
+                );
+              },
+            ),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => Dialog.fullscreen(
+                      child: assessmentInstruction(context),
                     ),
                   );
                 },
-              )),
+                icon: const Icon(Icons.info))
+          ],
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              margin: const EdgeInsets.only(left: 20, top: 20),
-              // decoration:
-              //     BoxDecoration(border: Border.all(style: BorderStyle.solid)),
-              child: Column(
-                // shrinkWrap: true,
-                children: [
-                  const Text(
-                    "ข้อมูลทั่วไป",
-                    style: TextStyle(fontSize: 22),
-                    textAlign: TextAlign.center,
+            child: Column(
+              children: [
+                const ListTile(
+                  contentPadding: EdgeInsets.only(right: 16),
+                  tileColor: Color(0xFFEAEAEA),
+                  title: Text(
+                    "ผู้สูงอายุ ชื่อ นามสกุล",
+                    style: TextStyle(fontSize: 16, color: Color(0xFF656363)),
+                    textAlign: TextAlign.right,
                   ),
-                  const Text(
-                    "ชื่อ นามสกุล",
-                    style: TextStyle(fontSize: 18),
-                    textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  "ข้อมูลทั่วไป",
+                  style: TextStyle(fontSize: 22),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: Column(
+                    // shrinkWrap: true,
+                    children: [
+                      FormBuilder(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            genderRadio(),
+                            ageTextInput(),
+                            weightTextInput(),
+                            heightTextInput(),
+                            incomeDropdown(),
+                            careerChip(),
+                            educationDropdown(),
+                            marriageRadio(),
+                            housememberTextInput(),
+                            alivememberTextInput(),
+                            workperiodTextInput(),
+                            workhourDropdown(),
+                            const SizedBox(height: 24),
+                            actionButton(),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    "ที่อยู่",
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    textAlign: TextAlign.center,
-                  ),
-                  FormBuilder(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        genderRadio(),
-                        ageTextInput(),
-                        weightTextInput(),
-                        heightTextInput(),
-                        incomeDropdown(),
-                        careerChip(),
-                        educationDropdown(),
-                        marriageRadio(),
-                        housememberTextInput(),
-                        alivememberTextInput(),
-                        workperiodTextInput(),
-                        workhourDropdown(),
-                        actionButton()
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
@@ -148,7 +165,9 @@ class _AssProfileState extends State<AssProfile> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        ElevatedButton(
+        ElevatedButton.icon(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          label: const Text("ย้อนกลับ"),
           onPressed: () {
             // back to home page
             Navigator.pop(context);
@@ -162,9 +181,10 @@ class _AssProfileState extends State<AssProfile> {
               borderRadius: BorderRadius.circular(24),
             )),
           ),
-          child: const Text("ย้อนกลับ"),
         ),
-        ElevatedButton(
+        ElevatedButton.icon(
+          icon: const Icon(Icons.save),
+          label: const Text("บันทึก"),
           onPressed: () {
             // save to database
             // back to home page
@@ -172,14 +192,13 @@ class _AssProfileState extends State<AssProfile> {
           },
           style: ButtonStyle(
             backgroundColor:
-                MaterialStateProperty.all<Color>(const Color(0xFFFE965F)),
+                MaterialStateProperty.all<Color>(const Color(0xFF407F40)),
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(24),
             )),
           ),
-          child: const Text("บันทึก"),
         ),
       ],
     );
