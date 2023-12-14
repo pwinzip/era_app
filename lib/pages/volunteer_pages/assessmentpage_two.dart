@@ -1,47 +1,46 @@
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
+import 'package:elra/pages/volunteer_pages/assessmentpage_home.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
+import 'package:elra/utils/manage_choices.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 
-class AssessmentPartOne extends StatefulWidget {
-  const AssessmentPartOne({super.key});
+class AssessmentPartTwo extends StatefulWidget {
+  const AssessmentPartTwo({super.key});
 
   @override
-  State<AssessmentPartOne> createState() => _AssessmentPartOneState();
+  State<AssessmentPartTwo> createState() => _AssessmentPartTwoState();
 }
 
-class _AssessmentPartOneState extends State<AssessmentPartOne> {
+class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
   final _advancedDrawerController = AdvancedDrawerController();
+  // 5 Criterias
+  final List<bool> _disable2 = List.generate(5, (index) => false);
+  final List<int> _answerTouch = List.generate(5, (index) => 0);
+  final List<int> _answerDamage = List.generate(5, (index) => 0);
 
-  final List<bool> _disable1 = [false, false, false, false, false, false];
+  final Map<String, dynamic> _manageChoice2 = manageChoice2;
+  final Map<String, dynamic> _enableManage2 = enableManage2;
+  final List<String> _manageGroup2 = manageGroup1;
 
-  final Map<String, dynamic> _manageChoice1 = {
-    "1.1": [false, false, false, false, false],
-    "1.2": [false, false, false, false, false],
-    "1.3": [false, false, false, false, false],
-    "1.4": [false, false, false, false, false],
-    "1.5": [false, false, false, false, false],
-    "1.6": [false, false, false, false, false],
+  final Map<String, dynamic> _questions2 = {
+    "2.1": "มีการสัมผัสฝุ่น",
+    "2.2": "มีการสัมผัสสารเคมี (กรด)",
+    "2.3": "มีการสัมผัสสารเคมี (ด่าง)",
+    "2.4": "มีการสัมผัสสารเคมี (ไอระเหย)",
+    "2.5": "มีการสัมผัสสารไวไฟ/วัตถุระเบิด",
   };
-  final Map<String, dynamic> _enable_manage1 = {
-    "1.1": [false, false, true, true, true],
-    "1.2": [true, false, true, true, true],
-    "1.3": [true, false, true, true, true],
-    "1.4": [true, false, true, true, true],
-    "1.5": [true, false, true, true, true],
-    "1.6": [true, true, true, true, true],
-  };
-  final List<String> _manage_group1 = [
-    'การบำรุงรักษา/ปรับปรุงพื้นที่',
-    'ทำความสะอาดร่างกาย/เสื้อผ้า',
-    'ใช้อุปกร์ป้องกันอันตรายส่วนบุคคล',
-    'เรียนรู้/อ่านฉลาก/คู่มือ',
-    'ตรวจสุขภาพ',
-  ];
+
+  @override
+  void dispose() {
+    _advancedDrawerController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    int subtitleIndex = 0;
     return AdvancedDrawer(
       backdrop: backdrop(),
       controller: _advancedDrawerController,
@@ -107,80 +106,21 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
                     // shrinkWrap: true,
                     children: [
                       const Text(
-                        "1. สิ่งแวดล้อมทางกายภาพ",
+                        "2. สิ่งแวดล้อมทางเคมี",
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.w500),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
-                      // ---------- 1.1 ----------
-                      const Text('1.1 มีการสัมผัสความร้อน',
-                          style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      assessmentSection(index: 0),
-                      const SizedBox(height: 16),
-                      createCheckbox1(sub: "1.1"),
-                      const Divider(),
-                      // ---------- 1.2 ----------
-                      const Text('1.2 มีการสัมผัสเสียงดัง',
-                          style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      assessmentSection(index: 1),
-                      const SizedBox(height: 16),
-                      createCheckbox1(sub: "1.2"),
-                      const Divider(),
-                      // ---------- 1.3 ----------
-                      const Text('1.3 มีแสงสว่างจ้าเกินไป',
-                          style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      assessmentSection(index: 1),
-                      const SizedBox(height: 16),
-                      createCheckbox1(sub: "1.3"),
-                      const Divider(),
-                      // ---------- 1.4 ----------
-                      const Text('1.4 มีแสงสว่างไม่เพียงพอ',
-                          style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      assessmentSection(index: 1),
-                      const SizedBox(height: 16),
-                      createCheckbox1(sub: "1.4"),
-                      const Divider(),
-                      // ---------- 1.5 ----------
-                      const Text('1.5 มีความสั่นสะเทือน',
-                          style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      assessmentSection(index: 1),
-                      const SizedBox(height: 16),
-                      createCheckbox1(sub: "1.5"),
-                      const Divider(),
-                      // ---------- 1.6 ----------
-                      const Text('1.6 มีการสัมผัสกับรังสี UV',
-                          style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 8),
-                      assessmentSection(index: 1),
-                      const SizedBox(height: 16),
-                      createCheckbox1(sub: "1.6"),
-                      const Divider(),
-                      // ---------- action button ----------
+                      // try for loop
+                      Column(
+                        children: _questions2.entries.map((q) {
+                          return _createQuestions(q, subtitleIndex++);
+                        }).toList(),
+                      ),
                       const SizedBox(height: 24),
                       actionButton(),
                       const SizedBox(height: 16),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     ElevatedButton(
-                      //       onPressed: () {
-                      //         Navigator.pop(context);
-                      //       },
-                      //       child: const Text('ย้อนกลับ'),
-                      //     ),
-                      //     ElevatedButton.icon(
-                      //       icon: const Icon(Icons.save_alt),
-                      //       label: const Text("บันทึก"),
-                      //       onPressed: () {},
-                      //     ),
-                      //   ],
-                      // ),
                     ],
                   ),
                 ),
@@ -188,6 +128,21 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _createQuestions(MapEntry<String, dynamic> q, int indx) {
+    return SizedBox(
+      child: Column(
+        children: [
+          Text("${q.key} ${q.value}", style: const TextStyle(fontSize: 18)),
+          const SizedBox(height: 8),
+          assessmentSection(index: indx),
+          const SizedBox(height: 16),
+          createCheckbox1(sub: q.key),
+          const Divider(),
+        ],
       ),
     );
   }
@@ -219,7 +174,15 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
           onPressed: () {
             // save to database
             // back to home page
-            Navigator.pop(context);
+            print(_answerTouch);
+            print(_answerDamage);
+            print(_manageChoice2);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AssHomePage(),
+                ));
+            // Navigator.pop(context);
           },
           style: ButtonStyle(
             backgroundColor:
@@ -257,7 +220,7 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
           selectedBorderColor: Colors.transparent,
           unSelectedBorderColor: Colors.transparent,
           buttonLables: const ['0', '1', '2', '3'],
-          buttonValues: const ["0", "1", "2", "3"],
+          buttonValues: const [0, 1, 2, 3],
           buttonTextStyle: const ButtonTextStyle(
             selectedColor: Colors.white,
             unSelectedColor: Colors.black,
@@ -265,13 +228,18 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
           ),
           radioButtonValue: (value) {
             print(value);
-            if (value == "0") {
+            setState(() {
+              _answerTouch[index] = value;
+            });
+            if (value == 0) {
               setState(() {
-                _disable1[index] = true;
+                print("$index disable");
+                _disable2[index] = true;
+                _answerDamage[index] = 0;
               });
             } else {
               setState(() {
-                _disable1[index] = false;
+                _disable2[index] = false;
               });
             }
           },
@@ -293,14 +261,14 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         const SizedBox(height: 8),
         CustomRadioButton(
           enableShape: true,
-          disabledValues: _disable1[index] ? ["1", "2", "3"] : [],
+          disabledValues: _disable2[index] ? [1, 2, 3] : [],
           width: 60,
           elevation: 0,
           // absoluteZeroSpacing: true,
           selectedBorderColor: Colors.transparent,
           unSelectedBorderColor: Colors.transparent,
           buttonLables: const ['1', '2', '3'],
-          buttonValues: const ["1", "2", "3"],
+          buttonValues: const [1, 2, 3],
           buttonTextStyle: const ButtonTextStyle(
             selectedColor: Colors.white,
             unSelectedColor: Colors.black,
@@ -309,6 +277,9 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
           ),
           radioButtonValue: (value) {
             print(value);
+            setState(() {
+              _answerDamage[index] = value;
+            });
           },
           selectedColor: Colors.blue.shade600,
           unSelectedColor: const Color(0xFFE8E8E8),
@@ -332,23 +303,23 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         tileColor: const Color(0xFF029F8F),
       ),
     );
-    for (var i in List.generate(_manage_group1.length, (index) => index)) {
+    for (var i in List.generate(_manageGroup2.length, (index) => index)) {
       widgets.add(
         CheckboxListTile(
           // value: _manageChoice1_1[i],
           // enabled: _enable_manage1_1[i],
-          value: _manageChoice1[sub][i],
-          enabled: _enable_manage1[sub][i],
+          value: _manageChoice2[sub][i],
+          enabled: _enableManage2[sub][i],
           controlAffinity: ListTileControlAffinity.trailing,
           dense: true,
           visualDensity: VisualDensity.comfortable,
           onChanged: (value) {
             setState(() {
-              _manageChoice1[sub][i] = value!;
+              _manageChoice2[sub][i] = value!;
             });
           },
           title: Text(
-            _manage_group1[i],
+            _manageGroup2[i],
             style: const TextStyle(fontSize: 14),
           ),
         ),

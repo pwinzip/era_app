@@ -11,6 +11,13 @@ class AssInfoPage extends StatefulWidget {
 
 class _AssInfoPageState extends State<AssInfoPage> {
   final _advancedDrawerController = AdvancedDrawerController();
+
+  @override
+  void dispose() {
+    _advancedDrawerController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AdvancedDrawer(

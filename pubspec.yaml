@@ -40,6 +40,7 @@ dependencies:
   flutter_form_builder: ^9.1.1
   form_builder_validators: ^9.1.0
   custom_radio_grouped_button: ^2.2.1
+  syncfusion_flutter_gauges: ^23.2.7
 
 dev_dependencies:
   flutter_test:
