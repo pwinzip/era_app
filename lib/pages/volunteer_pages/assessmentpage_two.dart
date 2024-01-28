@@ -94,7 +94,7 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
                   contentPadding: EdgeInsets.only(right: 16),
                   tileColor: Color(0xFFEAEAEA),
                   title: Text(
-                    "ผู้สูงอายุ ชื่อ นามสกุล",
+                    "นางเพ็ญศรี พันธ์คง",
                     style: TextStyle(fontSize: 16, color: Color(0xFF656363)),
                     textAlign: TextAlign.right,
                   ),
