@@ -332,6 +332,7 @@ class _AssessmentPartFiveState extends State<AssessmentPartFive> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
+          key: radioCustomTouchKey[index],
           enableShape: true,
           width: 60,
           elevation: 0,
@@ -378,6 +379,7 @@ class _AssessmentPartFiveState extends State<AssessmentPartFive> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
+          key: radioCustomDamageKey[index],
           enableShape: true,
           disabledValues: _disable5[index] ? [1, 2, 3] : [],
           width: 60,

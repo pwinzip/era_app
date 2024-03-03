@@ -360,7 +360,6 @@ class _AssessmentPartSixState extends State<AssessmentPartSix> {
                   builder: (context) =>
                       AssessmentPartSeven(elderid: widget.elderid),
                 ));
-            // Navigator.pop(context);
           },
           style: ButtonStyle(
             backgroundColor:
@@ -392,6 +391,7 @@ class _AssessmentPartSixState extends State<AssessmentPartSix> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
+          key: radioCustomTouchKey[index],
           enableShape: true,
           width: 60,
           elevation: 0,
@@ -438,6 +438,7 @@ class _AssessmentPartSixState extends State<AssessmentPartSix> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
+          key: radioCustomDamageKey[index],
           enableShape: true,
           disabledValues: _disable6[index] ? [1, 2, 3] : [],
           width: 60,
