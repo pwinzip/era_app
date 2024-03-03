@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:elra/pages/volunteer_pages/assessmentpage_home.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_one.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_one.dart';
+import 'package:elra/pages/admin_pages/admin_assessmentmain.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
 import 'package:elra/variables.dart';
@@ -15,16 +15,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:http/http.dart' as http;
 
-class AssProfile extends StatefulWidget {
-  const AssProfile({super.key, required this.elderid});
+class AdminAssProfile extends StatefulWidget {
+  const AdminAssProfile({super.key, required this.elderid});
 
   final int elderid;
 
   @override
-  State<AssProfile> createState() => _AssProfileState();
+  State<AdminAssProfile> createState() => _AdminAssProfileState();
 }
 
-class _AssProfileState extends State<AssProfile> {
+class _AdminAssProfileState extends State<AdminAssProfile> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String username = "";
@@ -144,20 +144,12 @@ class _AssProfileState extends State<AssProfile> {
       openRatio: 0.6,
       disabledGestures: false,
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      drawer: drawerMenu(context, name: username),
+      drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          title: const Text("ผู้ดูแลระบบ"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -416,7 +408,8 @@ class _AssProfileState extends State<AssProfile> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AssHomePage(elderid: widget.elderid),
+                  builder: (context) =>
+                      AdminAssessmentMainPage(elderid: widget.elderid),
                 ));
           },
           style: ButtonStyle(
@@ -441,7 +434,7 @@ class _AssProfileState extends State<AssProfile> {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        AssessmentPartOne(elderid: widget.elderid),
+                        AdminAssessmentPartOne(elderid: widget.elderid),
                   ));
             }
           },

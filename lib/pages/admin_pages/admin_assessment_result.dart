@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:elra/pages/volunteer_pages/volunteer_homepage.dart';
+import 'package:elra/pages/admin_pages/admin_assessmentpage.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
 import 'package:elra/variables.dart';
@@ -13,16 +13,16 @@ import 'package:syncfusion_flutter_gauges/gauges.dart';
 
 import 'package:http/http.dart' as http;
 
-class AssessmentResult extends StatefulWidget {
-  const AssessmentResult({super.key, required this.elderid});
+class AdminAssessmentResult extends StatefulWidget {
+  const AdminAssessmentResult({super.key, required this.elderid});
 
   final int elderid;
 
   @override
-  State<AssessmentResult> createState() => _AssessmentResultState();
+  State<AdminAssessmentResult> createState() => _AdminAssessmentResultState();
 }
 
-class _AssessmentResultState extends State<AssessmentResult> {
+class _AdminAssessmentResultState extends State<AdminAssessmentResult> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String username = "";
@@ -97,10 +97,10 @@ class _AssessmentResultState extends State<AssessmentResult> {
       childDecoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      drawer: drawerMenu(context, name: username),
+      drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          title: const Text("ผู้ดูแลระบบ"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -209,7 +209,7 @@ class _AssessmentResultState extends State<AssessmentResult> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const VolunteerHomePage(),
+                  builder: (context) => const AdminAssessmentHomePage(),
                 ));
           },
           style: ButtonStyle(

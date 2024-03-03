@@ -1,6 +1,7 @@
 import 'package:elra/utils/drawer_components.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AssInfoPage extends StatefulWidget {
   const AssInfoPage({super.key});
@@ -11,11 +12,24 @@ class AssInfoPage extends StatefulWidget {
 
 class _AssInfoPageState extends State<AssInfoPage> {
   final _advancedDrawerController = AdvancedDrawerController();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String username = "";
 
   @override
   void dispose() {
     _advancedDrawerController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initialValue();
+  }
+
+  void initialValue() async {
+    SharedPreferences prefs = await _prefs;
+    username = prefs.getString('name')!;
   }
 
   @override
@@ -41,7 +55,7 @@ class _AssInfoPageState extends State<AssInfoPage> {
         // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      drawer: drawerMenu(context),
+      drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("อาสาสมัคร"),

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:elra/pages/volunteer_pages/assessmentpage_home.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_two.dart';
+import 'package:elra/pages/volunteer_pages/assessmentpage_six.dart';
 import 'package:elra/utils/add_riskassessment.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
@@ -15,37 +15,37 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class AssessmentPartOne extends StatefulWidget {
-  const AssessmentPartOne({super.key, required this.elderid});
+class AssessmentPartFive extends StatefulWidget {
+  const AssessmentPartFive({super.key, required this.elderid});
 
   final int elderid;
 
   @override
-  State<AssessmentPartOne> createState() => _AssessmentPartOneState();
+  State<AssessmentPartFive> createState() => _AssessmentPartFiveState();
 }
 
-class _AssessmentPartOneState extends State<AssessmentPartOne> {
+class _AssessmentPartFiveState extends State<AssessmentPartFive> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String username = "";
   String eldername = "";
   String elderaddr = "";
   int assId = 0;
-  int part = 1;
+  int part = 5;
 
-  int criterias = 6;
-  final List<String> _subpart = ["1.1", "1.2", "1.3", "1.4", "1.5", "1.6"];
-  List<bool> _disable1 = [];
+  int criterias = 4;
+  final List<String> _subpart = ["5.1", "5.2", "5.3", "5.4"];
+  List<bool> _disable5 = [];
   List<int> _answerTouch = [];
   List<int> _answerDamage = [];
 
   List<GlobalKey<CustomRadioButtonState>> radioCustomTouchKey = [];
   List<GlobalKey<CustomRadioButtonState>> radioCustomDamageKey = [];
 
-  final Map<String, dynamic> _manageChoice1 = manageChoice1;
-  final Map<String, dynamic> _enableManage1 = enableManage1;
-  final List<String> _manageGroup1 = manageGroup1;
-  final Map<String, dynamic> _questions1 = questions1;
+  final Map<String, dynamic> _manageChoice5 = manageChoice5;
+  final Map<String, dynamic> _enableManage5 = enableManage5;
+  final List<String> _manageGroup5 = manageGroup2;
+  final Map<String, dynamic> _questions5 = questions5;
 
   @override
   void dispose() {
@@ -56,7 +56,7 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
   @override
   void initState() {
     super.initState();
-    _disable1 = List.generate(criterias, (index) => true);
+    _disable5 = List.generate(criterias, (index) => true);
     _answerTouch = List.generate(criterias, (index) => 0);
     _answerDamage = List.generate(criterias, (index) => 0);
     radioCustomTouchKey = List.generate(
@@ -84,12 +84,11 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
       HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
     });
     var jsonString = jsonDecode(response.body);
-
     setState(() {
       assId = jsonString['data']['ass_id'];
     });
 
-    url = Uri.parse("$apiURL/riskpartone/$assId");
+    url = Uri.parse("$apiURL/riskpartfive/$assId");
     response = await http.get(url, headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
@@ -101,7 +100,7 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
       var index = 0;
       for (var el in data) {
         setState(() {
-          _manageChoice1[el['subpart']] = el['manage'];
+          _manageChoice5[el['subpart']] = el['manage'];
           _answerTouch[index] = el['touch'];
           _answerDamage[index] = el['violent'];
           radioCustomTouchKey[index].currentState!.selectButton(el['touch']);
@@ -109,9 +108,6 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         });
         index++;
       }
-      print(_answerTouch);
-      print(_answerDamage);
-      print(_manageChoice1);
     }
   }
 
@@ -201,22 +197,23 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 8),
                 const Divider(),
+                const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
                     // shrinkWrap: true,
                     children: [
                       const Text(
-                        "1. สิ่งแวดล้อมทางกายภาพ",
+                        "5. จิตวิทยาสังคม",
                         style: TextStyle(
                             fontSize: 22, fontWeight: FontWeight.w500),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
+                      // try for loop
                       Column(
-                        children: _questions1.entries.map((q) {
+                        children: _questions5.entries.map((q) {
                           return _createQuestions(q, subtitleIndex++);
                         }).toList(),
                       ),
@@ -255,9 +252,8 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
       children: [
         ElevatedButton.icon(
           icon: const Icon(Icons.arrow_back_ios_new),
-          label: const Text("กลับไปหน้าแรก"),
+          label: const Text("ย้อนกลับ"),
           onPressed: () {
-            // back to home page
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -279,9 +275,10 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
           label: const Text("บันทึก"),
           onPressed: () {
             // save to database
+            // back to home page
             print(_answerTouch);
             print(_answerDamage);
-            print(_manageChoice1);
+            print(_manageChoice5);
 
             var result = [];
             for (var i = 0; i < criterias; i++) {
@@ -289,7 +286,7 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
                 "subpart": _subpart[i],
                 "touch": _answerTouch[i],
                 "violent": _answerDamage[i],
-                "manage": _manageChoice1[_subpart[i]],
+                "manage": _manageChoice5[_subpart[i]],
               });
             }
 
@@ -297,11 +294,12 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
             print(body);
 
             addRiskAssessment(assId, jsonEncode(body));
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      AssessmentPartTwo(elderid: widget.elderid),
+                      AssessmentPartSix(elderid: widget.elderid),
                 ));
           },
           style: ButtonStyle(
@@ -334,11 +332,9 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
-          key: radioCustomTouchKey[index],
           enableShape: true,
           width: 60,
           elevation: 0,
-          defaultSelected: _answerTouch[index],
           selectedBorderColor: Colors.transparent,
           unSelectedBorderColor: Colors.transparent,
           buttonLables: const ['0', '1', '2', '3'],
@@ -349,18 +345,19 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
             textStyle: TextStyle(fontSize: 16),
           ),
           radioButtonValue: (value) {
+            print(value);
             setState(() {
               _answerTouch[index] = value;
             });
             if (value == 0) {
               setState(() {
                 print("$index disable");
-                _disable1[index] = true;
-                // _answerDamage[index] = 0;
+                _disable5[index] = true;
+                _answerDamage[index] = 0;
               });
             } else {
               setState(() {
-                _disable1[index] = false;
+                _disable5[index] = false;
               });
             }
           },
@@ -381,9 +378,8 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
-          key: radioCustomDamageKey[index],
-          enableShape: _disable1[index],
-          disabledValues: _disable1[index] ? [1, 2, 3] : [],
+          enableShape: true,
+          disabledValues: _disable5[index] ? [1, 2, 3] : [],
           width: 60,
           elevation: 0,
           // absoluteZeroSpacing: true,
@@ -425,23 +421,23 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
         tileColor: const Color(0xFF029F8F),
       ),
     );
-    for (var i in List.generate(_manageGroup1.length, (index) => index)) {
+    for (var i in List.generate(_manageGroup5.length, (index) => index)) {
       widgets.add(
         CheckboxListTile(
           // value: _manageChoice1_1[i],
           // enabled: _enable_manage1_1[i],
-          value: _manageChoice1[sub][i],
-          enabled: _enableManage1[sub][i],
+          value: _manageChoice5[sub][i],
+          enabled: _enableManage5[sub][i],
           controlAffinity: ListTileControlAffinity.trailing,
           dense: true,
           visualDensity: VisualDensity.comfortable,
           onChanged: (value) {
             setState(() {
-              _manageChoice1[sub][i] = value!;
+              _manageChoice5[sub][i] = value!;
             });
           },
           title: Text(
-            _manageGroup1[i],
+            _manageGroup5[i],
             style: const TextStyle(fontSize: 14),
           ),
         ),

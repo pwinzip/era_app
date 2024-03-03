@@ -1,13 +1,24 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:elra/pages/volunteer_pages/assessmentpage_home.dart';
+import 'package:elra/pages/volunteer_pages/assessmentpage_three.dart';
+import 'package:elra/utils/add_riskassessment.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
 import 'package:elra/utils/manage_choices.dart';
+import 'package:elra/variables.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AssessmentPartTwo extends StatefulWidget {
-  const AssessmentPartTwo({super.key});
+  const AssessmentPartTwo({super.key, required this.elderid});
+
+  final int elderid;
 
   @override
   State<AssessmentPartTwo> createState() => _AssessmentPartTwoState();
@@ -15,27 +26,93 @@ class AssessmentPartTwo extends StatefulWidget {
 
 class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
   final _advancedDrawerController = AdvancedDrawerController();
-  // 5 Criterias
-  final List<bool> _disable2 = List.generate(5, (index) => false);
-  final List<int> _answerTouch = List.generate(5, (index) => 0);
-  final List<int> _answerDamage = List.generate(5, (index) => 0);
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  String username = "";
+  String eldername = "";
+  String elderaddr = "";
+  int assId = 0;
+  int part = 2;
+
+  int criterias = 5;
+  final List<String> _subpart = ["2.1", "2.2", "2.3", "2.4", "2.5"];
+  List<bool> _disable2 = [];
+  List<int> _answerTouch = [];
+  List<int> _answerDamage = [];
+
+  List<GlobalKey<CustomRadioButtonState>> radioCustomTouchKey = [];
+  List<GlobalKey<CustomRadioButtonState>> radioCustomDamageKey = [];
 
   final Map<String, dynamic> _manageChoice2 = manageChoice2;
   final Map<String, dynamic> _enableManage2 = enableManage2;
   final List<String> _manageGroup2 = manageGroup1;
 
-  final Map<String, dynamic> _questions2 = {
-    "2.1": "มีการสัมผัสฝุ่น",
-    "2.2": "มีการสัมผัสสารเคมี (กรด)",
-    "2.3": "มีการสัมผัสสารเคมี (ด่าง)",
-    "2.4": "มีการสัมผัสสารเคมี (ไอระเหย)",
-    "2.5": "มีการสัมผัสสารไวไฟ/วัตถุระเบิด",
-  };
+  final Map<String, dynamic> _questions2 = questions2;
 
   @override
   void dispose() {
     _advancedDrawerController.dispose();
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _disable2 = List.generate(criterias, (index) => true);
+    _answerTouch = List.generate(criterias, (index) => 0);
+    _answerDamage = List.generate(criterias, (index) => 0);
+    radioCustomTouchKey = List.generate(
+        criterias, (index) => GlobalKey<CustomRadioButtonState>());
+    radioCustomDamageKey = List.generate(
+        criterias, (index) => GlobalKey<CustomRadioButtonState>());
+    initialValue();
+    getAssessment();
+  }
+
+  void initialValue() async {
+    SharedPreferences prefs = await _prefs;
+    setState(() {
+      username = prefs.getString('name')!;
+      eldername = prefs.getString('eldername')!;
+      elderaddr = prefs.getString('elderaddr')!;
+    });
+  }
+
+  Future<void> getAssessment() async {
+    SharedPreferences prefs = await _prefs;
+    var url = Uri.parse("$apiURL/assessmentelder/${widget.elderid}");
+    var response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
+    });
+    var jsonString = jsonDecode(response.body);
+    setState(() {
+      assId = jsonString['data']['ass_id'];
+    });
+
+    url = Uri.parse("$apiURL/riskparttwo/$assId");
+    response = await http.get(url, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
+    });
+    jsonString = jsonDecode(response.body);
+
+    if (jsonString['data'].length > 0) {
+      var data = jsonString['data'];
+      var index = 0;
+      for (var el in data) {
+        setState(() {
+          _manageChoice2[el['subpart']] = el['manage'];
+          _answerTouch[index] = el['touch'];
+          _answerDamage[index] = el['violent'];
+          radioCustomTouchKey[index].currentState!.selectButton(el['touch']);
+          radioCustomDamageKey[index].currentState!.selectButton(el['violent']);
+        });
+        index++;
+      }
+      print(_answerTouch);
+      print(_answerDamage);
+      print(_manageChoice2);
+    }
   }
 
   @override
@@ -54,7 +131,7 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
       childDecoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      drawer: drawerMenu(context),
+      drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("อาสาสมัคร"),
@@ -90,15 +167,41 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                const ListTile(
-                  contentPadding: EdgeInsets.only(right: 16),
-                  tileColor: Color(0xFFEAEAEA),
-                  title: Text(
-                    "นางเพ็ญศรี พันธ์คง",
-                    style: TextStyle(fontSize: 16, color: Color(0xFF656363)),
-                    textAlign: TextAlign.right,
+                ListTile(
+                  contentPadding: const EdgeInsets.only(right: 16),
+                  tileColor: const Color.fromARGB(255, 2, 128, 170),
+                  title: Column(
+                    children: [
+                      Text(
+                        "แบบประเมินประจำเดือน ${DateFormat.MMMM('th').format(DateTime.now())} พ.ศ. ${int.parse(DateFormat.y('th').format(DateTime.now())) + 543}",
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 233, 233, 233)),
+                      ),
+                    ],
                   ),
                 ),
+                ListTile(
+                  contentPadding: const EdgeInsets.only(right: 16),
+                  // tileColor: const Color(0xFFEAEAEA),
+                  title: Column(
+                    children: [
+                      Text(
+                        eldername,
+                        style: const TextStyle(
+                            fontSize: 16, color: Color(0xFF656363)),
+                        textAlign: TextAlign.right,
+                      ),
+                      Text(
+                        elderaddr,
+                        style: const TextStyle(
+                            fontSize: 16, color: Color(0xFF656363)),
+                        textAlign: TextAlign.right,
+                      ),
+                    ],
+                  ),
+                ),
+                const Divider(),
                 const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
@@ -153,10 +256,14 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
       children: [
         ElevatedButton.icon(
           icon: const Icon(Icons.arrow_back_ios_new),
-          label: const Text("ย้อนกลับ"),
+          label: const Text("กลับไปหน้าแรก"),
           onPressed: () {
             // back to home page
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AssHomePage(elderid: widget.elderid),
+                ));
           },
           style: ButtonStyle(
             backgroundColor:
@@ -177,12 +284,28 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
             print(_answerTouch);
             print(_answerDamage);
             print(_manageChoice2);
-            Navigator.pushReplacement(
+
+            var result = [];
+            for (var i = 0; i < criterias; i++) {
+              result.add({
+                "subpart": _subpart[i],
+                "touch": _answerTouch[i],
+                "violent": _answerDamage[i],
+                "manage": _manageChoice2[_subpart[i]],
+              });
+            }
+
+            var body = {"part": part, "result": result};
+            print(body);
+
+            addRiskAssessment(assId, jsonEncode(body));
+
+            Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AssHomePage(),
+                  builder: (context) =>
+                      AssessmentPartThree(elderid: widget.elderid),
                 ));
-            // Navigator.pop(context);
           },
           style: ButtonStyle(
             backgroundColor:
@@ -214,6 +337,7 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
+          key: radioCustomTouchKey[index],
           enableShape: true,
           width: 60,
           elevation: 0,
@@ -260,6 +384,7 @@ class _AssessmentPartTwoState extends State<AssessmentPartTwo> {
         ),
         const SizedBox(height: 8),
         CustomRadioButton(
+          key: radioCustomDamageKey[index],
           enableShape: true,
           disabledValues: _disable2[index] ? [1, 2, 3] : [],
           width: 60,

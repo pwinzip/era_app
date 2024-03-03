@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:elra/models/asselder_model.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_profile.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_one.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_two.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_three.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_four.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_five.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_six.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_seven.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_eight.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_result.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_eight.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_five.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_four.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_one.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_profile.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_result.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_seven.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_six.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_three.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_two.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
 import 'package:elra/variables.dart';
@@ -20,18 +20,20 @@ import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:http/http.dart' as http;
 
-class AssHomePage extends StatefulWidget {
-  const AssHomePage({super.key, required this.elderid});
+class AdminAssessmentMainPage extends StatefulWidget {
+  const AdminAssessmentMainPage({super.key, required this.elderid});
 
   final int elderid;
 
   @override
-  State<AssHomePage> createState() => _AssHomePageState();
+  State<AdminAssessmentMainPage> createState() =>
+      _AdminAssessmentMainPageState();
 }
 
-class _AssHomePageState extends State<AssHomePage> {
+class _AdminAssessmentMainPageState extends State<AdminAssessmentMainPage> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String username = "";
@@ -87,8 +89,8 @@ class _AssHomePageState extends State<AssHomePage> {
     print(response.statusCode);
 
     var jsonString = jsonDecode(response.body);
-    print(jsonString);
-    print("-----");
+    // print(jsonString);
+    // print("-----");
     AsselderModel assdata = AsselderModel.fromJson(jsonString['data'][0]);
 
     setState(() {
@@ -135,20 +137,12 @@ class _AssHomePageState extends State<AssHomePage> {
       openRatio: 0.6,
       disabledGestures: false,
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      drawer: drawerMenu(context, name: username),
+      drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          title: const Text("ผู้ดูแลระบบ"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -227,7 +221,7 @@ class _AssHomePageState extends State<AssHomePage> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) =>
-                                    AssProfile(elderid: widget.elderid),
+                                    AdminAssProfile(elderid: widget.elderid),
                               ));
                         },
                         child: createCardMenu("ข้อมูลทั่วไป", _completed[0]),
@@ -236,7 +230,7 @@ class _AssHomePageState extends State<AssHomePage> {
                         onTap: () {
                           _completed[0]
                               ? Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => AssessmentPartOne(
+                                  builder: (context) => AdminAssessmentPartOne(
                                     elderid: widget.elderid,
                                   ),
                                 ))
@@ -251,8 +245,9 @@ class _AssHomePageState extends State<AssHomePage> {
                               ? Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => AssessmentPartTwo(
-                                        elderid: widget.elderid),
+                                    builder: (context) =>
+                                        AdminAssessmentPartTwo(
+                                            elderid: widget.elderid),
                                   ))
                               : () {};
                         },
@@ -265,8 +260,9 @@ class _AssHomePageState extends State<AssHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AssessmentPartThree(
-                                          elderid: widget.elderid),
+                                      builder: (context) =>
+                                          AdminAssessmentPartThree(
+                                              elderid: widget.elderid),
                                     ));
                               }
                             : () {},
@@ -279,8 +275,9 @@ class _AssHomePageState extends State<AssHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AssessmentPartFour(
-                                          elderid: widget.elderid),
+                                      builder: (context) =>
+                                          AdminAssessmentPartFour(
+                                              elderid: widget.elderid),
                                     ));
                               }
                             : () {},
@@ -292,8 +289,9 @@ class _AssHomePageState extends State<AssHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AssessmentPartFive(
-                                          elderid: widget.elderid),
+                                      builder: (context) =>
+                                          AdminAssessmentPartFive(
+                                              elderid: widget.elderid),
                                     ));
                               }
                             : () {},
@@ -306,8 +304,9 @@ class _AssHomePageState extends State<AssHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AssessmentPartSix(
-                                          elderid: widget.elderid),
+                                      builder: (context) =>
+                                          AdminAssessmentPartSix(
+                                              elderid: widget.elderid),
                                     ));
                               }
                             : () {},
@@ -321,8 +320,9 @@ class _AssHomePageState extends State<AssHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AssessmentPartSeven(
-                                          elderid: widget.elderid),
+                                      builder: (context) =>
+                                          AdminAssessmentPartSeven(
+                                              elderid: widget.elderid),
                                     ));
                               }
                             : () {},
@@ -336,8 +336,9 @@ class _AssHomePageState extends State<AssHomePage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => AssessmentPartEight(
-                                          elderid: widget.elderid),
+                                      builder: (context) =>
+                                          AdminAssessmentPartEight(
+                                              elderid: widget.elderid),
                                     ));
                               }
                             : () {},
@@ -351,7 +352,8 @@ class _AssHomePageState extends State<AssHomePage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => AssessmentResult(
+                                        builder: (context) =>
+                                            AdminAssessmentResult(
                                           elderid: widget.elderid,
                                         ),
                                       ));
@@ -369,16 +371,6 @@ class _AssHomePageState extends State<AssHomePage> {
     );
   }
 
-  Future<void> submitResult() async {
-    SharedPreferences prefs = await _prefs;
-    var url = Uri.parse("$apiURL/updatestatus/$assId");
-    var response = await http.put(url, headers: {
-      HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
-    });
-    print(response.statusCode);
-  }
-
   Card createCardMenu(String title, bool enable) {
     return Card(
       color: enable ? const Color(0xFFBBFFBB) : const Color(0xFFF5AD86),
@@ -392,6 +384,16 @@ class _AssHomePageState extends State<AssHomePage> {
             : null,
       ),
     );
+  }
+
+  Future<void> submitResult() async {
+    SharedPreferences prefs = await _prefs;
+    var url = Uri.parse("$apiURL/updatestatus/$assId");
+    var response = await http.put(url, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
+    });
+    print(response.statusCode);
   }
 
   void _handleMenuButtonPressed() {

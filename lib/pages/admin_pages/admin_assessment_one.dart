@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_home.dart';
-import 'package:elra/pages/volunteer_pages/assessmentpage_two.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_two.dart';
+import 'package:elra/pages/admin_pages/admin_assessmentmain.dart';
 import 'package:elra/utils/add_riskassessment.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/info.dart';
@@ -15,16 +15,16 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
-class AssessmentPartOne extends StatefulWidget {
-  const AssessmentPartOne({super.key, required this.elderid});
+class AdminAssessmentPartOne extends StatefulWidget {
+  const AdminAssessmentPartOne({super.key, required this.elderid});
 
   final int elderid;
 
   @override
-  State<AssessmentPartOne> createState() => _AssessmentPartOneState();
+  State<AdminAssessmentPartOne> createState() => _AdminAssessmentPartOneState();
 }
 
-class _AssessmentPartOneState extends State<AssessmentPartOne> {
+class _AdminAssessmentPartOneState extends State<AdminAssessmentPartOne> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   String username = "";
@@ -131,10 +131,10 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
       childDecoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      drawer: drawerMenu(context, name: username),
+      drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          title: const Text("ผู้ดูแลระบบ"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -261,7 +261,8 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
             Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AssHomePage(elderid: widget.elderid),
+                  builder: (context) =>
+                      AdminAssessmentMainPage(elderid: widget.elderid),
                 ));
           },
           style: ButtonStyle(
@@ -301,7 +302,7 @@ class _AssessmentPartOneState extends State<AssessmentPartOne> {
                 context,
                 MaterialPageRoute(
                   builder: (context) =>
-                      AssessmentPartTwo(elderid: widget.elderid),
+                      AdminAssessmentPartTwo(elderid: widget.elderid),
                 ));
           },
           style: ButtonStyle(
