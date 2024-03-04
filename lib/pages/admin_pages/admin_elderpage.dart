@@ -48,20 +48,13 @@ class _AdminElderPageState extends State<AdminElderPage> {
       openRatio: 0.6,
       disabledGestures: false,
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("จัดการผู้สูงอายุ"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -85,26 +78,13 @@ class _AdminElderPageState extends State<AdminElderPage> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                const ListTile(
-                  contentPadding: EdgeInsets.only(right: 16),
-                  tileColor: Color.fromARGB(255, 2, 128, 170),
-                  title: Column(
-                    children: [
-                      Text(
-                        "รายชื่อผู้สูงอายุ",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 233, 233, 233)),
-                      ),
-                    ],
-                  ),
-                ),
                 showElderList(),
               ],
             ),
           ),
         )),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
           onPressed: () {
             Navigator.push(
                 context,

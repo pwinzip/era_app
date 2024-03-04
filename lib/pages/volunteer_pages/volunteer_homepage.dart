@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:elra/models/eldersbyvolunteer_model.dart';
 import 'package:elra/pages/volunteer_pages/assessmentpage_home.dart';
+import 'package:elra/pages/volunteer_pages/assessmentpage_result.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/variables.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,6 @@ class VolunteerHomePage extends StatefulWidget {
 class _VolunteerHomePageState extends State<VolunteerHomePage> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  List elders_complete = [];
-  List elders_incomplete = [];
 
   String username = "";
 
@@ -54,18 +52,6 @@ class _VolunteerHomePageState extends State<VolunteerHomePage> {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer ${prefs.getString("token")}"
     });
-
-    // var jsonString = jsonDecode(response.body);
-    // print(jsonString);
-    // Eldersbyvolunteer eld = Eldersbyvolunteer.fromJson(jsonString['data']);
-    // elders_incomplete = jsonString['data']['incomplete']
-    //     .map<AssComplete>((json) => AssComplete.fromJson(json))
-    //     .toList();
-    // elders_complete = jsonString['data']['complete']
-    //     .map<AssComplete>((json) => AssComplete.fromJson(json))
-    //     .toList();
-    // print(elders_incomplete);
-    // print(elders_complete);
     return response.body;
   }
 
@@ -82,20 +68,13 @@ class _VolunteerHomePageState extends State<VolunteerHomePage> {
       openRatio: 0.6,
       disabledGestures: false,
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          backgroundColor: const Color.fromARGB(255, 245, 195, 138),
+          title: const Text("รายชื่อผู้สูงอายุ"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -113,39 +92,28 @@ class _VolunteerHomePageState extends State<VolunteerHomePage> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              margin: const EdgeInsets.only(left: 20, top: 20),
-              // decoration:
-              //     BoxDecoration(border: Border.all(style: BorderStyle.solid)),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  ListTile(
-                    contentPadding: const EdgeInsets.only(right: 16),
-                    tileColor: const Color.fromARGB(255, 2, 128, 170),
-                    title: Column(
-                      children: [
-                        Text(
-                          "แบบประเมินประจำเดือน ${DateFormat.MMMM('th').format(DateTime.now())} พ.ศ. ${int.parse(DateFormat.y('th').format(DateTime.now())) + 543}",
-                          style: const TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 233, 233, 233)),
-                        ),
-                      ],
-                    ),
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: const EdgeInsets.only(right: 16),
+                  tileColor: const Color.fromARGB(255, 2, 128, 170),
+                  title: Column(
+                    children: [
+                      Text(
+                        "แบบประเมินประจำเดือน ${DateFormat.MMMM('th').format(DateTime.now())} พ.ศ. ${int.parse(DateFormat.y('th').format(DateTime.now())) + 543}",
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 233, 233, 233)),
+                      ),
+                    ],
                   ),
-                  const Center(
-                      child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "รายชื่อผู้สูงอายุที่รับผิดชอบ",
-                      style: TextStyle(fontSize: 20, color: Colors.teal),
-                    ),
-                  )),
-                  showElderList(),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: showElderList(),
+                ),
+              ],
             ),
           ),
         ),
@@ -189,7 +157,7 @@ class _VolunteerHomePageState extends State<VolunteerHomePage> {
         } else {
           myList = [
             const SizedBox(
-                width: 60, height: 60, child: CircularProgressIndicator()),
+                width: 60, height: 60, child: LinearProgressIndicator()),
             const Padding(
               padding: EdgeInsets.only(top: 16),
               child: Text("อยู่ระหว่างประมวลผล"),
@@ -220,7 +188,24 @@ class _VolunteerHomePageState extends State<VolunteerHomePage> {
         subtitle:
             Text("${data.houseNo} หมู่ที่ ${data.moo} ตำบล${data.tambon}"),
         trailing: complete
-            ? const SizedBox()
+            ? ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 2, 152, 147))),
+                onPressed: () {
+                  print(data.userId);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AssessmentResult(elderid: data.userId),
+                      ));
+                },
+                child: const Text(
+                  "ดูผลประเมิน",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
             : ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:

@@ -63,7 +63,8 @@ class _AddElderPageState extends State<AddElderPage> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("เพิ่มผู้สูงอายุ"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -361,7 +362,7 @@ class _AddElderPageState extends State<AddElderPage> {
   Widget prefixChip() {
     return FormBuilderChoiceChip<String>(
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      alignment: WrapAlignment.center,
+      alignment: WrapAlignment.start,
       spacing: 4,
       runSpacing: 10,
       name: 'prefix',

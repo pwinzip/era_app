@@ -49,20 +49,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
       openRatio: 0.6,
       disabledGestures: false,
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("จัดการผู้ดูแลระบบ"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -83,29 +76,19 @@ class _AdminHomePageState extends State<AdminHomePage> {
           child: Container(
             width: MediaQuery.of(context).size.width * 0.9,
             margin: const EdgeInsets.only(left: 20, top: 20),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                const ListTile(
-                  contentPadding: EdgeInsets.only(right: 16),
-                  tileColor: Color.fromARGB(255, 2, 128, 170),
-                  title: Column(
-                    children: [
-                      Text(
-                        "รายชื่อผู้ดูแลระบบ",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 233, 233, 233)),
-                      ),
-                    ],
-                  ),
-                ),
-                showAdminList(),
-              ],
+            alignment: Alignment.topCenter,
+            child: Center(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  showAdminList(),
+                ],
+              ),
             ),
           ),
         )),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
           onPressed: () {
             Navigator.push(
                 context,
@@ -153,10 +136,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
           ];
         }
 
-        return Center(
-          child: Column(
-            children: myList,
-          ),
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: myList,
         );
       },
     );
@@ -170,7 +152,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
           "${admin.userprefix}${admin.name}",
           style: const TextStyle(fontSize: 14),
         ),
-        subtitle: Text(admin.username),
+        subtitle: Text("ชื่อผู้ใช้งาน: ${admin.username}"),
       ),
     );
   }

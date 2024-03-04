@@ -6,6 +6,7 @@ import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/utils/phapayom.dart';
 import 'package:elra/variables.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -58,20 +59,13 @@ class _AddVolunteerPageState extends State<AddVolunteerPage> {
       openRatio: 0.6,
       disabledGestures: false,
       childDecoration: const BoxDecoration(
-        // NOTICE: Uncomment if you want to add shadow behind the page.
-        // Keep in mind that it may cause animation jerks.
-        // boxShadow: <BoxShadow>[
-        //   BoxShadow(
-        //     color: Colors.black12,
-        //     blurRadius: 0.0,
-        //   ),
-        // ],
         borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("เพิ่มอาสาสมัคร"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -95,21 +89,6 @@ class _AddVolunteerPageState extends State<AddVolunteerPage> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                const ListTile(
-                  contentPadding: EdgeInsets.only(right: 16),
-                  tileColor: Color.fromARGB(255, 2, 128, 170),
-                  title: Column(
-                    children: [
-                      Text(
-                        "เพิ่มอาสาสมัคร",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 233, 233, 233)),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
@@ -307,6 +286,9 @@ class _AddVolunteerPageState extends State<AddVolunteerPage> {
     return FormBuilderTextField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       name: 'username',
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9_.]"))
+      ],
       decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -388,7 +370,7 @@ class _AddVolunteerPageState extends State<AddVolunteerPage> {
   Widget prefixChip() {
     return FormBuilderChoiceChip<String>(
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      alignment: WrapAlignment.center,
+      alignment: WrapAlignment.start,
       spacing: 4,
       runSpacing: 10,
       name: 'prefix',

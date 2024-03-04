@@ -30,6 +30,7 @@ class _AssessmentPartThreeState extends State<AssessmentPartThree> {
   String username = "";
   String eldername = "";
   String elderaddr = "";
+  String codename = "";
   int assId = 0;
   int part = 3;
 
@@ -74,6 +75,7 @@ class _AssessmentPartThreeState extends State<AssessmentPartThree> {
       username = prefs.getString('name')!;
       eldername = prefs.getString('eldername')!;
       elderaddr = prefs.getString('elderaddr')!;
+      codename = prefs.getString('codename')!;
     });
   }
 
@@ -131,7 +133,8 @@ class _AssessmentPartThreeState extends State<AssessmentPartThree> {
       drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          backgroundColor: const Color.fromARGB(255, 245, 195, 138),
+          title: const Text("แบบประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -178,27 +181,28 @@ class _AssessmentPartThreeState extends State<AssessmentPartThree> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        eldername,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                const Divider(),
                 const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,

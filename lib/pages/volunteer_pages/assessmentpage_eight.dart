@@ -29,6 +29,7 @@ class _AssessmentPartEightState extends State<AssessmentPartEight> {
   String username = "";
   String eldername = "";
   String elderaddr = "";
+  String codename = "";
   int assId = 0;
   int part = 8;
 
@@ -72,6 +73,7 @@ class _AssessmentPartEightState extends State<AssessmentPartEight> {
       username = prefs.getString('name')!;
       eldername = prefs.getString('eldername')!;
       elderaddr = prefs.getString('elderaddr')!;
+      codename = prefs.getString('codename')!;
     });
   }
 
@@ -129,7 +131,8 @@ class _AssessmentPartEightState extends State<AssessmentPartEight> {
       drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          backgroundColor: const Color.fromARGB(255, 245, 195, 138),
+          title: const Text("แบบประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -176,24 +179,28 @@ class _AssessmentPartEightState extends State<AssessmentPartEight> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        eldername,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                          textAlign: TextAlign.right,
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                          textAlign: TextAlign.right,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(),
@@ -249,6 +256,27 @@ class _AssessmentPartEightState extends State<AssessmentPartEight> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
+        ElevatedButton.icon(
+          icon: const Icon(Icons.arrow_back_ios_new),
+          label: const Text("กลับไปหน้าแรก"),
+          onPressed: () {
+            // back to home page
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AssHomePage(elderid: widget.elderid),
+                ));
+          },
+          style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(const Color(0xFFFE965F)),
+            foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+            )),
+          ),
+        ),
         ElevatedButton.icon(
           icon: const Icon(Icons.save),
           label: const Text("บันทึก"),

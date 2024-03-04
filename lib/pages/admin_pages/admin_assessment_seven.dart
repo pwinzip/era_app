@@ -31,6 +31,7 @@ class _AdminAssessmentPartSevenState extends State<AdminAssessmentPartSeven> {
   String username = "";
   String eldername = "";
   String elderaddr = "";
+  String codename = "";
   int assId = 0;
   int part = 7;
 
@@ -74,6 +75,7 @@ class _AdminAssessmentPartSevenState extends State<AdminAssessmentPartSeven> {
       username = prefs.getString('name')!;
       eldername = prefs.getString('eldername')!;
       elderaddr = prefs.getString('elderaddr')!;
+      codename = prefs.getString('codename')!;
     });
   }
 
@@ -131,7 +133,7 @@ class _AdminAssessmentPartSevenState extends State<AdminAssessmentPartSeven> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          title: const Text("การประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -178,24 +180,26 @@ class _AdminAssessmentPartSevenState extends State<AdminAssessmentPartSeven> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        eldername,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(),
@@ -253,7 +257,7 @@ class _AdminAssessmentPartSevenState extends State<AdminAssessmentPartSeven> {
       children: [
         ElevatedButton.icon(
           icon: const Icon(Icons.arrow_back_ios_new),
-          label: const Text("ย้อนกลับ"),
+          label: const Text("กลับไปหน้าแรก"),
           onPressed: () {
             // back to home page
             Navigator.pushReplacement(

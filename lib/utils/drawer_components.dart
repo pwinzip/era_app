@@ -181,8 +181,8 @@ SafeArea drawerAdminMenu(BuildContext context, {required String name}) {
                       builder: (context) => const AdminHomePage(),
                     ));
               },
-              leading: const Icon(Icons.home_filled),
-              title: const Text('หน้าแรก'),
+              leading: const Icon(Icons.assignment_ind_outlined),
+              title: const Text('จัดการผู้ดูแลระบบ'),
             ),
             ListTile(
               onTap: () {
@@ -193,7 +193,7 @@ SafeArea drawerAdminMenu(BuildContext context, {required String name}) {
                     ));
               },
               leading: const Icon(Icons.volunteer_activism),
-              title: const Text('อาสาสมัคร'),
+              title: const Text('จัดการอาสาสมัคร'),
             ),
             ListTile(
               onTap: () {
@@ -204,7 +204,7 @@ SafeArea drawerAdminMenu(BuildContext context, {required String name}) {
                     ));
               },
               leading: const Icon(Icons.elderly_rounded),
-              title: const Text('ผู้สูงอายุ'),
+              title: const Text('จัดการผู้สูงอายุ'),
             ),
             ListTile(
               onTap: () {

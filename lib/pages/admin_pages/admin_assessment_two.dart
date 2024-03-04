@@ -30,6 +30,7 @@ class _AdminAssessmentPartTwoState extends State<AdminAssessmentPartTwo> {
   String username = "";
   String eldername = "";
   String elderaddr = "";
+  String codename = "";
   int assId = 0;
   int part = 2;
 
@@ -74,6 +75,7 @@ class _AdminAssessmentPartTwoState extends State<AdminAssessmentPartTwo> {
       username = prefs.getString('name')!;
       eldername = prefs.getString('eldername')!;
       elderaddr = prefs.getString('elderaddr')!;
+      codename = prefs.getString('codename')!;
     });
   }
 
@@ -134,7 +136,7 @@ class _AdminAssessmentPartTwoState extends State<AdminAssessmentPartTwo> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          title: const Text("การประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -181,24 +183,26 @@ class _AdminAssessmentPartTwoState extends State<AdminAssessmentPartTwo> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        eldername,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(),

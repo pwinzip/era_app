@@ -574,8 +574,8 @@ class _AdminAssProfileState extends State<AdminAssProfile> {
       initialValue: null,
       name: 'status',
       onChanged: _onChangedGender,
-      validator:
-          FormBuilderValidators.compose([FormBuilderValidators.required()]),
+      validator: FormBuilderValidators.compose(
+          [FormBuilderValidators.required(errorText: "เลือกสถานะ")]),
       options: maritalOption
           .map((status) => FormBuilderFieldOption(
                 value: status,

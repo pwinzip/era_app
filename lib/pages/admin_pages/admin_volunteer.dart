@@ -54,7 +54,8 @@ class _AdminVolunteerPageState extends State<AdminVolunteerPage> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("จัดการอาสาสมัคร"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -78,26 +79,13 @@ class _AdminVolunteerPageState extends State<AdminVolunteerPage> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                const ListTile(
-                  contentPadding: EdgeInsets.only(right: 16),
-                  tileColor: Color.fromARGB(255, 2, 128, 170),
-                  title: Column(
-                    children: [
-                      Text(
-                        "รายชื่ออาสามัคร",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 233, 233, 233)),
-                      ),
-                    ],
-                  ),
-                ),
                 showVolunteerList(),
               ],
             ),
           ),
         )),
         floatingActionButton: FloatingActionButton(
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
           onPressed: () {
             Navigator.push(
                 context,
@@ -147,6 +135,7 @@ class _AdminVolunteerPageState extends State<AdminVolunteerPage> {
 
         return Center(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: myList,
           ),
         );
@@ -157,20 +146,13 @@ class _AdminVolunteerPageState extends State<AdminVolunteerPage> {
   Widget volunteerList(VolunteerModel vol) {
     return Card(
       child: ListTile(
-          onTap: () {},
-          title: Text(
-            "${vol.prefix}${vol.name}",
-            style: const TextStyle(fontSize: 14),
-          ),
-          subtitle: Text("หมู่ที่ ${vol.moo} ตำบล${vol.tambon}"),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.edit, color: Colors.teal)),
-            ],
-          )),
+        onTap: () {},
+        title: Text(
+          "${vol.prefix}${vol.name}",
+          style: const TextStyle(fontSize: 14),
+        ),
+        subtitle: Text("หมู่ที่ ${vol.moo} ตำบล${vol.tambon}"),
+      ),
     );
   }
 

@@ -142,7 +142,8 @@ class _AdminAssessmentMainPageState extends State<AdminAssessmentMainPage> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("แบบประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -189,24 +190,26 @@ class _AdminAssessmentMainPageState extends State<AdminAssessmentMainPage> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        codename,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -359,7 +362,7 @@ class _AdminAssessmentMainPageState extends State<AdminAssessmentMainPage> {
                                       ));
                                 }
                               : () {},
-                          child: const Text("ส่งข้อมูล")),
+                          child: const Text("ส่งแบบประเมิน")),
                     ],
                   ),
                 ),

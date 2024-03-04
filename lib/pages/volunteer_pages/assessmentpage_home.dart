@@ -19,6 +19,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -148,7 +150,8 @@ class _AssHomePageState extends State<AssHomePage> {
       drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          backgroundColor: const Color.fromARGB(255, 245, 195, 138),
+          title: const Text("แบบประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -195,24 +198,26 @@ class _AssHomePageState extends State<AssHomePage> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        codename,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -356,8 +361,16 @@ class _AssHomePageState extends State<AssHomePage> {
                                         ),
                                       ));
                                 }
-                              : () {},
-                          child: const Text("ส่งข้อมูล")),
+                              : () {
+                                  QuickAlert.show(
+                                    context: context,
+                                    type: QuickAlertType.warning,
+                                    title: "ส่งแบบประเมิน",
+                                    text: 'ทำแบบประเมินให้ครบถ้วน',
+                                    confirmBtnText: "ตกลง",
+                                  );
+                                },
+                          child: const Text("ส่งแบบประเมิน")),
                     ],
                   ),
                 ),

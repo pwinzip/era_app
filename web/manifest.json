@@ -3,9 +3,9 @@
     "short_name": "elra",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FF914D",
+    "theme_color": "#FF914D",
+    "description": "An Elder Risk Assessment",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

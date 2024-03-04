@@ -5,6 +5,7 @@ import 'package:elra/pages/admin_pages/admin_homepage.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/variables.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -60,7 +61,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          backgroundColor: const Color.fromARGB(255, 138, 197, 245),
+          title: const Text("เพิ่มผู้ดูแลระบบ"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -84,21 +86,6 @@ class _AddAdminPageState extends State<AddAdminPage> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                const ListTile(
-                  contentPadding: EdgeInsets.only(right: 16),
-                  tileColor: Color.fromARGB(255, 2, 128, 170),
-                  title: Column(
-                    children: [
-                      Text(
-                        "เพิ่มอาสาสมัคร",
-                        style: TextStyle(
-                            fontSize: 16,
-                            color: Color.fromARGB(255, 233, 233, 233)),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 8),
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   child: Column(
@@ -257,7 +244,7 @@ class _AddAdminPageState extends State<AddAdminPage> {
         //     : const Icon(Icons.check, color: Colors.green),
       ),
       validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(errorText: "ใส่ชื่อผู้ใช้งาน"),
+        FormBuilderValidators.required(errorText: "ใส่รหัสผ่าน"),
       ]),
     );
   }
@@ -266,6 +253,9 @@ class _AddAdminPageState extends State<AddAdminPage> {
     return FormBuilderTextField(
       autovalidateMode: AutovalidateMode.onUserInteraction,
       name: 'username',
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z0-9_.]"))
+      ],
       decoration: const InputDecoration(
         border: OutlineInputBorder(
             borderRadius: BorderRadius.all(Radius.circular(16))),
@@ -273,9 +263,8 @@ class _AddAdminPageState extends State<AddAdminPage> {
         //     ? const Icon(Icons.error, color: Colors.red)
         //     : const Icon(Icons.check, color: Colors.green),
       ),
-      validator: FormBuilderValidators.compose([
-        FormBuilderValidators.required(errorText: "ใส่ชื่อผู้ใช้งาน"),
-      ]),
+      validator: FormBuilderValidators.compose(
+          [FormBuilderValidators.required(errorText: "ใส่ชื่อผู้ใช้งาน")]),
     );
   }
 
@@ -299,9 +288,9 @@ class _AddAdminPageState extends State<AddAdminPage> {
   Widget prefixChip() {
     return FormBuilderChoiceChip<String>(
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      alignment: WrapAlignment.center,
+      alignment: WrapAlignment.start,
       spacing: 4,
-      runSpacing: 10,
+      runSpacing: 15,
       name: 'prefix',
       decoration: const InputDecoration(border: InputBorder.none),
       options: const [

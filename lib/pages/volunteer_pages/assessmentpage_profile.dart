@@ -157,7 +157,8 @@ class _AssProfileState extends State<AssProfile> {
       drawer: drawerMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("อาสาสมัคร"),
+          backgroundColor: const Color.fromARGB(255, 245, 195, 138),
+          title: const Text("แบบประเมินความเสี่ยง"),
           leading: IconButton(
             onPressed: _handleMenuButtonPressed,
             icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -204,24 +205,26 @@ class _AssProfileState extends State<AssProfile> {
                     ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.only(right: 16),
-                  // tileColor: const Color(0xFFEAEAEA),
-                  title: Column(
-                    children: [
-                      Text(
-                        codename,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                      Text(
-                        elderaddr,
-                        style: const TextStyle(
-                            fontSize: 16, color: Color(0xFF656363)),
-                        textAlign: TextAlign.right,
-                      ),
-                    ],
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(right: 16),
+                    // tileColor: const Color(0xFFEAEAEA),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          codename,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                        Text(
+                          elderaddr,
+                          style: const TextStyle(
+                              fontSize: 16, color: Color(0xFF656363)),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Divider(),
@@ -581,8 +584,8 @@ class _AssProfileState extends State<AssProfile> {
       initialValue: null,
       name: 'status',
       onChanged: _onChangedGender,
-      validator:
-          FormBuilderValidators.compose([FormBuilderValidators.required()]),
+      validator: FormBuilderValidators.compose(
+          [FormBuilderValidators.required(errorText: "เลือกสถานะ")]),
       options: maritalOption
           .map((status) => FormBuilderFieldOption(
                 value: status,

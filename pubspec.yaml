@@ -1,5 +1,5 @@
 name: elra
-description: A new Flutter project.
+description: An Elder Risk Assessment App.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
@@ -45,6 +45,18 @@ dependencies:
   shared_preferences: ^2.2.2
   intl: ^0.18.1
   quickalert: ^1.0.2
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/elraicon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/elraicon.png"
+    background_color: "#FF914D"
+    theme_color: "#FF914D"
 
 dev_dependencies:
   flutter_test:

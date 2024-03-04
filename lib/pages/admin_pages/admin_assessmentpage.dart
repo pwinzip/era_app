@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:elra/models/eldersbyvolunteer_model.dart';
+import 'package:elra/pages/admin_pages/admin_assessment_result.dart';
 import 'package:elra/pages/admin_pages/admin_assessmentmain.dart';
 import 'package:elra/utils/drawer_components.dart';
 import 'package:elra/variables.dart';
@@ -23,9 +24,6 @@ class AdminAssessmentHomePage extends StatefulWidget {
 class _AdminAssessmentHomePageState extends State<AdminAssessmentHomePage> {
   final _advancedDrawerController = AdvancedDrawerController();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-
-  List elders_complete = [];
-  List elders_incomplete = [];
 
   String username = "";
 
@@ -60,7 +58,7 @@ class _AdminAssessmentHomePageState extends State<AdminAssessmentHomePage> {
       drawer: drawerAdminMenu(context, name: username),
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("ผู้ดูแลระบบ"),
+          title: const Text("แบบประเมินความเสี่ยง"),
           leading: IconButton(
               onPressed: _handleMenuButtonPressed,
               icon: ValueListenableBuilder<AdvancedDrawerValue>(
@@ -78,39 +76,27 @@ class _AdminAssessmentHomePageState extends State<AdminAssessmentHomePage> {
         ),
         body: SafeArea(
           child: SingleChildScrollView(
-            child: Container(
-              width: MediaQuery.of(context).size.width * 0.9,
-              margin: const EdgeInsets.only(left: 20, top: 20),
-              // decoration:
-              //     BoxDecoration(border: Border.all(style: BorderStyle.solid)),
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  ListTile(
-                    contentPadding: const EdgeInsets.only(right: 16),
-                    tileColor: const Color.fromARGB(255, 2, 128, 170),
-                    title: Column(
-                      children: [
-                        Text(
-                          "แบบประเมินประจำเดือน ${DateFormat.MMMM('th').format(DateTime.now())} พ.ศ. ${int.parse(DateFormat.y('th').format(DateTime.now())) + 543}",
-                          style: const TextStyle(
-                              fontSize: 16,
-                              color: Color.fromARGB(255, 233, 233, 233)),
-                        ),
-                      ],
-                    ),
+            child: Column(
+              children: [
+                ListTile(
+                  contentPadding: const EdgeInsets.only(right: 16),
+                  tileColor: const Color.fromARGB(255, 2, 128, 170),
+                  title: Column(
+                    children: [
+                      Text(
+                        "แบบประเมินประจำเดือน ${DateFormat.MMMM('th').format(DateTime.now())} พ.ศ. ${int.parse(DateFormat.y('th').format(DateTime.now())) + 543}",
+                        style: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 233, 233, 233)),
+                      ),
+                    ],
                   ),
-                  const Center(
-                      child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      "รายชื่อผู้สูงอายุ",
-                      style: TextStyle(fontSize: 20, color: Colors.teal),
-                    ),
-                  )),
-                  showElderList(),
-                ],
-              ),
+                ),
+                const SizedBox(height: 16),
+                SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    child: showElderList()),
+              ],
             ),
           ),
         ),
@@ -185,7 +171,7 @@ class _AdminAssessmentHomePageState extends State<AdminAssessmentHomePage> {
   Widget elderList({required AssComplete data, required bool complete}) {
     return Card(
       color: complete
-          ? const Color.fromARGB(255, 155, 250, 158)
+          ? const Color.fromARGB(255, 169, 220, 171)
           : Theme.of(context).cardColor,
       child: ListTile(
         onTap: () {},
@@ -196,7 +182,24 @@ class _AdminAssessmentHomePageState extends State<AdminAssessmentHomePage> {
         subtitle:
             Text("${data.houseNo} หมู่ที่ ${data.moo} ตำบล${data.tambon}"),
         trailing: complete
-            ? const SizedBox()
+            ? ElevatedButton(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(
+                        const Color.fromARGB(255, 2, 152, 147))),
+                onPressed: () {
+                  print(data.userId);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            AdminAssessmentResult(elderid: data.userId),
+                      ));
+                },
+                child: const Text(
+                  "ดูผลประเมิน",
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
             : ElevatedButton(
                 style: ButtonStyle(
                     backgroundColor:
